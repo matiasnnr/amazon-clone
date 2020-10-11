@@ -5,8 +5,35 @@ import { auth } from "./firebase"
 
 function Login() {
 
+    const history = useHistory()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const signIn = event => {
+        // We use event.preventDefault() to prevent the page from reloading because of the form tag
+        event.preventDefault()
+
+        auth
+            .signInWithEmailAndPassword(email, password)
+            .then(auth => {
+                history.push('/')
+            })
+            .catch(error => alert(error.message))
+    }
+
+    const register = event => {
+        event.preventDefault()
+
+        auth
+            .createUserWithEmailAndPassword(email, password)
+            .then((auth) => {
+                // it successfully created a new user with email and password
+                if (auth) {
+                    history.push('/')
+                }
+            })
+            .catch(error => alert(error.message))
+    }
 
     return (
         <div className='login'>
@@ -23,12 +50,12 @@ function Login() {
 
                 <form>
                     <h5>E-mail</h5>
-                    <input type='text' value={email} onChange={e => setEmail(e.target.value)} />
+                    <input type='text' value={email} onChange={event => setEmail(event.target.value)} />
 
                     <h5>Password</h5>
-                    <input type='password' value={password} onChange={e => setPassword(e.target.value)} />
+                    <input type='password' value={password} onChange={event => setPassword(event.target.value)} />
 
-                    <button type='submit' className='login__signInButton'>Sign In</button>
+                    <button type='submit' onClick={signIn} className='login__signInButton'>Sign In</button>
                 </form>
 
                 <p>
@@ -36,7 +63,7 @@ function Login() {
                     see our Privacy Notice, our Cookies Notice and our Interest-Based Ads Notice.
                 </p>
 
-                <button className='login__registerButton'>Create your Amazon Account</button>
+                <button onClick={register} className='login__registerButton'>Create your Amazon Account</button>
             </div>
         </div>
     )
