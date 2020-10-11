@@ -8,12 +8,17 @@ export const initialState = {
     // https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/reduce
     basket?.reduce((amount, item) => item.price + amount, 0)
   
-  const reducer = (state, action) => {
-    console.log(action);
-    switch (action.type) {
-      default:
-        return state;
+    const reducer = (state, action) => {
+      console.log(action);
+      switch (action.type) {
+        case "ADD_TO_BASKET":
+          return {
+            ...state,
+            basket: [...state.basket, action.item],
+          };
+        default:
+          return state;
+      }
     }
-  }
   
   export default reducer
